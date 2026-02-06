@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup, updateProfile, sendEmailVerification } from 'firebase/auth';
 import { auth, googleProvider } from '../../../libs/firebase-config';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -21,13 +21,16 @@ export default function RegisterPage() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;  
+      await sendEmailVerification(user);
+      
       
       // Update user profile with name
       await updateProfile(userCredential.user, {
         displayName: name
       });
       
-      router.push('/dashboard');
+      router.push('/onboardingselect');
     } catch (err) {
       let errorMessage = 'An error occurred. Please try again.';
       
@@ -60,7 +63,7 @@ export default function RegisterPage() {
 
     try {
       await signInWithPopup(auth, googleProvider);
-      router.push('/dashboard');
+      router.push('/onboardingselect');
     } catch (err) {
       let errorMessage = 'An error occurred with Google sign-in.';
       
