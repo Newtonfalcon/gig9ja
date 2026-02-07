@@ -107,7 +107,7 @@ export default function Recruiter() {
         updatedAt: serverTimestamp()
       });
 
-      // Redirect to dashboard
+      
       router.push('/dashboard');
     } catch (err) {
       console.error('Error creating user record:', err);

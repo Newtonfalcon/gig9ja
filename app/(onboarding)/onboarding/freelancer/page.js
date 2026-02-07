@@ -122,7 +122,9 @@ export default function Freelancer() {
       uid: user.uid,
       email: user.email,
       profileImage: user.photoURL || "",
-      
+      userId: user.uid,
+      trustedRating: 0,
+
       
       ...completeData
     });

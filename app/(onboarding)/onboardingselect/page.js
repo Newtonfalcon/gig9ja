@@ -35,9 +35,9 @@ export default function RoleSelectionPage() {
 
       // Redirect based on role
       if (role === "freelancer") {
-        router.push("/dashboard/freelancer");
+        router.push("/onboarding/freelancer");
       } else {
-        router.push("/dashboard/recruiter");
+        router.push("/onboarding/recruiter");
       }
     } catch (error) {
       console.error("Error saving role:", error);
