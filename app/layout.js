@@ -1,6 +1,9 @@
 
 import { DM_Sans, Outfit } from 'next/font/google';
 import './globals.css';
+import { AuthProvider } from '@/libs/context/AuthContext';
+
+
 
 const dmSans = DM_Sans({ 
   subsets: ['latin'],
@@ -25,7 +28,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
+      <AuthProvider>
         {children}
+      </AuthProvider>
       </body>
     </html>
   );

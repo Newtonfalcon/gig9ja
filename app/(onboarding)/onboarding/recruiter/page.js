@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth, db } from '@/libs/firebase-config';
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { setDoc, serverTimestamp, doc } from "firebase/firestore";
 import { onAuthStateChanged } from 'firebase/auth';
+import { Merge } from 'lucide-react';
 
 export default function Recruiter() {
   const router = useRouter();
@@ -62,7 +63,7 @@ export default function Recruiter() {
 
     try {
       
-      await addDoc(collection(db, "users"), {
+      await setDoc(doc(db, "users", user.uid), {
         name: formData.name || user.displayName || "Anonymous",
         company: formData.company || "",
         jobRole: formData.role || "", 
@@ -70,9 +71,10 @@ export default function Recruiter() {
         email: user.email,
         profileImage: user.photoURL || "",
         userId: user.uid,
+        onboardingCompleted: true,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
-      });
+      }, {merge: true});
 
      
       router.push('/dashboard');
@@ -83,6 +85,11 @@ export default function Recruiter() {
       setLoading(false);
     }
   };
+const getNamefromEmail = (email) => {
+    if (!email) return "Anonymous";
+    const namePart = email.split('@')[0];
+    return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+  }
 
   const handleSkip = async () => {
     
@@ -95,14 +102,15 @@ export default function Recruiter() {
 
     try {
       
-      await addDoc(collection(db, "users"), {
-        name: user.displayName || "Anonymous",
+      await setDoc(collection(db, "users", user.uid), {
+        name: user.displayName || getNamefromEmail(user.email),
+        onboardingCompleted: true,
         company: "",
         jobRole: "",
         userRole: "recruiter",
         email: user.email,
         profileImage: user.photoURL || "",
-        userId: user.uid,
+        
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       });

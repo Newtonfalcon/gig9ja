@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth, db } from '@/libs/firebase-config';
 import { onAuthStateChanged } from 'firebase/auth';
-import { addDoc, collection } from 'firebase/firestore';
+import { setDoc, serverTimestamp, doc,  } from 'firebase/firestore';
 
 
 export default function Freelancer() {
@@ -36,7 +36,7 @@ export default function Freelancer() {
     location: '',
     availability: '',
     experienceLevel: '',
-    role: 'freelancer', 
+    userRole: 'freelancer', 
     portfolioLinks: ''
   });
 
@@ -118,16 +118,22 @@ export default function Freelancer() {
     };
 
 
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
+    await setDoc(doc(db, 'users', user.uid), {
+    
       email: user.email,
       profileImage: user.photoURL || "",
       userId: user.uid,
+    
+      onboardingCompleted: true,
+
+      
       trustedRating: 0,
 
       
-      ...completeData
-    });
+      ...completeData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
 
    
 

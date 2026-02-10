@@ -19,7 +19,15 @@ export default function LoginPage() {
     setError('');
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const token = await userCredential.user.getIdToken();
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
       router.push('/dashboard');
     } catch (err) {
       let errorMessage = 'An error occurred. Please try again.';
@@ -50,7 +58,15 @@ export default function LoginPage() {
     setError('');
 
     try {
-      await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const token = await userCredential.user.getIdToken();
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
       router.push('/dashboard');
     } catch (err) {
       let errorMessage = 'An error occurred with Google sign-in.';

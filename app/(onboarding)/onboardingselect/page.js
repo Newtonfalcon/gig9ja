@@ -6,19 +6,14 @@ import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "@/libs/firebase-config";
 
 
-
 export default function RoleSelectionPage() {
-  useEffect(()=>{
-    const user = auth.currentUser;
-    if (!user) {
-      router.push('/login');
-    }
 
-  }, [])
+  const router = useRouter();
+ 
 
 
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  
 
   const handleSelectRole = async (role) => {
     const user = auth.currentUser;
@@ -26,14 +21,10 @@ export default function RoleSelectionPage() {
 
     try {
       setLoading(true);
+      
 
-      await updateDoc(doc(db, "users", user.uid), {
-        role,
-        onboardingCompleted: true,
-        updatedAt: serverTimestamp(),
-      });
-
-      // Redirect based on role
+    
+      
       if (role === "freelancer") {
         router.push("/onboarding/freelancer");
       } else {

@@ -21,7 +21,17 @@ export default function RegisterPage() {
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;  
+      
+      const user = userCredential.user;
+      const token = await user.getIdToken();
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
+
       await sendEmailVerification(user);
       
       
@@ -62,7 +72,15 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      await signInWithPopup(auth, googleProvider);
+      const userCredential = await signInWithPopup(auth, googleProvider);
+      const token = await userCredential.user.getIdToken();
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ token }),
+      });
       router.push('/onboardingselect');
     } catch (err) {
       let errorMessage = 'An error occurred with Google sign-in.';
