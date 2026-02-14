@@ -32,7 +32,7 @@ export default function Freelancer() {
     fullName: '',
     professionalTitle: '',
     bio: '',
-    primarySkills: '',
+    primarySkills: [],
     location: '',
     availability: '',
     experienceLevel: '',
@@ -40,7 +40,7 @@ export default function Freelancer() {
     portfolioLinks: ''
   });
 
-  
+
   const [accountDetails] = useState({
     bankName: '',
     accountNumber: '',
@@ -50,20 +50,29 @@ export default function Freelancer() {
     businessRegistration: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  if (name === "primarySkills") {
+    const array = value
+      .split(",")
+      .map((skill) => skill.trim())
+      .filter(Boolean);
+
+    setFormData((prev) => ({
+      ...prev,
+      primarySkills: array
+    }));
+  } else {
+    setFormData((prev) => ({
+      ...prev,
       [name]: value
-    });
-    // Clear error for this field when user starts typing
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: ''
-      });
-    }
-  };
+    }));
+  }
+};
+
+
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -82,7 +91,7 @@ export default function Freelancer() {
       newErrors.bio = 'Bio should be at least 50 characters';
     }
 
-    if (!formData.primarySkills.trim()) {
+    if (!formData.primarySkills.length == 0) {
       newErrors.primarySkills = 'At least one skill is required';
     }
 
@@ -128,6 +137,8 @@ export default function Freelancer() {
 
       
       trustedRating: 0,
+      projects: 0,
+
 
       
       ...completeData,
@@ -239,7 +250,7 @@ export default function Freelancer() {
               name="primarySkills"
               type="text"
               placeholder="e.g., React, Node.js, UI/UX Design, SEO, Video Editing (separate with commas)"
-              value={formData.primarySkills}
+              value={formData.primarySkills.join(', ')}
               onChange={handleChange}
               className={`w-full px-4 py-3 text-[15px] border ${errors.primarySkills ? 'border-[#ff6b6b]' : 'border-[#d0d0d0]'} rounded-sm bg-white text-black placeholder:text-[#999999] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all duration-200`}
               disabled={loading}

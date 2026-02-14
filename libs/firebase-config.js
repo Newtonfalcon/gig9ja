@@ -1,11 +1,12 @@
-// lib/firebase.ts (or wherever this lives)
 
-// Import the functions you need
 import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager
+} from "firebase/firestore";
 
 
 const firebaseConfig = {
@@ -18,10 +19,9 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase (avoid re-initializing)
+
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
-// Analytics (safe for SSR)
 let analytics = null;
 if (typeof window !== "undefined") {
   isSupported().then((yes) => {
@@ -30,10 +30,15 @@ if (typeof window !== "undefined") {
 }
 
 
-
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
-export const db = getFirestore(app);
+
+
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+});
 
 export { app, analytics };
 

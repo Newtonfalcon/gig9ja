@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   IoHomeOutline,
@@ -9,16 +9,21 @@ import {
   IoPersonOutline,
   IoSettingsOutline
 } from 'react-icons/io5';
+import { useAuth } from '@/libs/context/AuthContext';
 
-export default function BottomNavIsland() {
+
+export default function BottomNavIsland({Cpath}) {
   const pathname = usePathname();
   const router = useRouter();
+  
+ 
 
+  
   // Navigation items data
   const navItems = [
     {
       label: 'Home',
-      path: '/dashboard',
+      path: Cpath,
       icon: IoHomeOutline
     },
     {
@@ -53,6 +58,7 @@ export default function BottomNavIsland() {
         <div className="flex items-center justify-around h-16 px-3">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
+            
             const Icon = item.icon;
 
             return (
