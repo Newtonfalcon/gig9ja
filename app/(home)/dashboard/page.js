@@ -28,7 +28,7 @@ function DashboardPage() {
     return <LoadingPage />
   }
 
-  return <div className="text-center py-10 bg-white text-black justify-center items-center w-full h-screen ">Redirecting...</div>
+  return <LoadingPage/>
 }
 
 export default DashboardPage
