@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/libs/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import Navbar from '@/components/Navbar';
+
 import Image from 'next/image';
 import { 
   Briefcase, 
@@ -16,6 +16,7 @@ import {
   DollarSign,
   MessageSquare
 } from 'lucide-react';
+import BottomNavIsland from '@/components/Navbar';
 
 export default function RecruiterDashboard() {
   const { user } = useAuth();
@@ -366,7 +367,7 @@ export default function RecruiterDashboard() {
         </div>
       </main>
     </div>
-    <Navbar Cpath={"/dashboard/recruiter"}/>
+    <BottomNavIsland Cpath={"/dashboard/recruiter"}/>
 
     </>
   );

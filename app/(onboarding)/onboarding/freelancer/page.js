@@ -250,7 +250,7 @@ const handleChange = (e) => {
               name="primarySkills"
               type="text"
               placeholder="e.g., React, Node.js, UI/UX Design, SEO, Video Editing (separate with commas)"
-              value={formData.primarySkills.join(', ')}
+              value={formData.primarySkills}
               onChange={handleChange}
               className={`w-full px-4 py-3 text-[15px] border ${errors.primarySkills ? 'border-[#ff6b6b]' : 'border-[#d0d0d0]'} rounded-sm bg-white text-black placeholder:text-[#999999] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all duration-200`}
               disabled={loading}
@@ -397,10 +397,10 @@ const handleChange = (e) => {
               id="portfolioLinks"
               name="portfolioLinks"
               rows="4"
-              placeholder="Share links to your portfolio, GitHub, Behance, Dribbble, or completed projects. One link per line:
-https://github.com/yourusername
-https://yourportfolio.com
-https://behance.net/yourprofile"
+              placeholder='Share links to your portfolio, GitHub, Behance, Dribbble, or completed projects. One link per line:
+                  https://github.com/yourusername
+                  https://yourportfolio.com
+                  https://behance.net/yourprofile'
               value={formData.portfolioLinks}
               onChange={handleChange}
               className="w-full px-4 py-3 text-[15px] border border-[#d0d0d0] rounded-sm bg-white text-black placeholder:text-[#999999] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all duration-200 resize-none"

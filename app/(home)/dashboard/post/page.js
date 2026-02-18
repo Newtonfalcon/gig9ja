@@ -19,6 +19,8 @@ import {
   Info
 } from 'lucide-react';
 import BottomNavIsland from '@/components/Navbar';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '@/libs/firebase-config';
 
 export default function CreatePostPage() {
   const { user } = useAuth();
@@ -41,7 +43,9 @@ export default function CreatePostPage() {
     urgency: 'medium',
     location: '',
     workType: 'remote',
-    experienceLevel: 'intermediate'
+    experienceLevel: 'intermediate',
+
+    
   });
 
   const [errors, setErrors] = useState({});
@@ -99,11 +103,16 @@ export default function CreatePostPage() {
     const skill = skillInput.trim();
     if (skill && !formData.skills.includes(skill) && formData.skills.length < 10) {
       setFormData(prev => ({
+
+
+
+        
         ...prev,
         skills: [...prev.skills, skill]
       }));
       setSkillInput('');
       if (errors.skills) {
+
         setErrors(prev => ({ ...prev, skills: '' }));
       }
     }
@@ -172,14 +181,37 @@ export default function CreatePostPage() {
     setLoading(true);
 
     try {
-      // TODO: Add your Firebase logic here
-      console.log('Form data to submit:', formData);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
       
       // Redirect after successful submission
       if (isRecruiter) {
+        const data = await addDoc(collection(db, "jobs"), {
+          title: formData.title,
+          category: formData.category,
+          description: formData.description,
+          skills: formData.skills,
+          budgetMin: formData.budgetMin,
+          budgetMax: formData.budgetMax,
+          duration:formData.duration,
+          
+          location: formData.location,
+          pLevel: urgencyLevels,
+          workType:workTypes,
+          eLevel: formData.experienceLevel,
+
+          userId: user?.uid,
+          
+
+
+          
+          
+
+        
+
+          
+
+
+        })
         router.push('/dashboard/recruiter/jobs');
       } else {
         router.push('/dashboard/freelancer/services');
@@ -202,7 +234,7 @@ export default function CreatePostPage() {
 
   return (
     <>
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white text-black pb-20">
       {/* Fixed Top Navigation */}
       <nav className="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 z-50 shadow-sm">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -697,7 +729,7 @@ export default function CreatePostPage() {
         </div>
       </main>
     </div>
-    <BottomNavIsland Cpath={"/dashboard/post"}/>
+    <BottomNavIsland />
     </>
   );
 }

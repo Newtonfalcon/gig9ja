@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   IoHomeOutline,
@@ -9,44 +9,44 @@ import {
   IoPersonOutline,
   IoSettingsOutline
 } from 'react-icons/io5';
-import { useAuth } from '@/libs/context/AuthContext';
 
-
-export default function BottomNavIsland({Cpath}) {
+export default function BottomNavIsland({ Cpath }) {
   const pathname = usePathname();
   const router = useRouter();
   
  
-
-  
-  // Navigation items data
-  const navItems = [
+  const navItems = useMemo(() => [
     {
+      id: 'home',  
       label: 'Home',
-      path: Cpath,
+      path: Cpath || '/dashboard',
       icon: IoHomeOutline
     },
     {
+      id: 'search',
       label: 'Search',
       path: '/dashboard/search',
       icon: IoSearchOutline
     },
     {
+      id: 'post',
       label: 'Post',
-      path: Cpath,
+      path: '/dashboard/post',
       icon: IoAddCircleOutline
     },
     {
+      id: 'profile',
       label: 'Profile',
       path: '/dashboard/profile',
       icon: IoPersonOutline
     },
     {
+      id: 'settings',
       label: 'Settings',
       path: '/dashboard/settings',
       icon: IoSettingsOutline
     }
-  ];
+  ], [Cpath]); // Only recreate if Cpath changes
 
   const handleNavigation = (path) => {
     router.push(path);
@@ -58,14 +58,15 @@ export default function BottomNavIsland({Cpath}) {
         <div className="flex items-center justify-around h-16 px-2">
           {navItems.map((item) => {
             const isActive = pathname === item.path;
-            
             const Icon = item.icon;
 
             return (
               <button
-                key={item.path}
+                key={item.id}  // ✅ Use stable unique ID instead of path
                 onClick={() => handleNavigation(item.path)}
                 className="flex flex-col items-center justify-center gap-1 flex-1 group relative"
+                aria-label={item.label}
+                aria-current={isActive ? 'page' : undefined}
               >
                 {/* Icon with green circle outline when active */}
                 <div className={`relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
