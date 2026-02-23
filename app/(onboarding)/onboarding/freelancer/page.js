@@ -39,8 +39,10 @@ export default function Freelancer() {
     userRole: 'freelancer', 
     portfolioLinks: ''
   });
+  const [skillsinput, setskillsinput] = useState("")
 
 
+ 
   const [accountDetails] = useState({
     bankName: '',
     accountNumber: '',
@@ -54,7 +56,9 @@ const handleChange = (e) => {
   const { name, value } = e.target;
 
   if (name === "primarySkills") {
+    setskillsinput(value)
     const array = value
+    
       .split(",")
       .map((skill) => skill.trim())
       .filter(Boolean);
@@ -91,7 +95,7 @@ const handleChange = (e) => {
       newErrors.bio = 'Bio should be at least 50 characters';
     }
 
-    if (!formData.primarySkills.length == 0) {
+    if (formData.primarySkills.length == 0) {
       newErrors.primarySkills = 'At least one skill is required';
     }
 
@@ -250,7 +254,7 @@ const handleChange = (e) => {
               name="primarySkills"
               type="text"
               placeholder="e.g., React, Node.js, UI/UX Design, SEO, Video Editing (separate with commas)"
-              value={formData.primarySkills}
+              value={formData.skillsinput}
               onChange={handleChange}
               className={`w-full px-4 py-3 text-[15px] border ${errors.primarySkills ? 'border-[#ff6b6b]' : 'border-[#d0d0d0]'} rounded-sm bg-white text-black placeholder:text-[#999999] focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-all duration-200`}
               disabled={loading}

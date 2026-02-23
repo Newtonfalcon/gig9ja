@@ -198,6 +198,7 @@ export default function CreatePostPage() {
           pLevel: urgencyLevels,
           workType:workTypes,
           eLevel: formData.experienceLevel,
+          isAvailable: true,
 
           userId: user?.uid,
           
@@ -212,9 +213,25 @@ export default function CreatePostPage() {
 
 
         })
-        router.push('/dashboard/recruiter/jobs');
+        router.push('/dashboard/recruiter');
       } else {
-        router.push('/dashboard/freelancer/services');
+        const serviceData = await addDoc(collection(db, "services"), {
+          title: formData.title,
+          category: formData.category,
+          description: formData.description,
+          skills: formData.skills,  
+          budgetMin: formData.budgetMin,
+          budgetMax: formData.budgetMax,
+          duration:formData.duration,
+          location: formData.location,
+          pLevel: urgencyLevels,
+          workType:workTypes,
+          eLevel: formData.experienceLevel,
+         
+          userId: user?.uid,
+          
+        })
+        router.push('/dashboard/freelancer');
       }
     } catch (error) {
       console.error('Error submitting:', error);

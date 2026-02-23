@@ -1,5 +1,5 @@
 
-import { DM_Sans, Outfit } from 'next/font/google';
+import { DM_Sans, Outfit, Orbitron } from 'next/font/google';
 import './globals.css';
 import { AuthProvider } from '@/libs/context/AuthContext';
 
@@ -9,6 +9,13 @@ const dmSans = DM_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '700'],
   variable: '--font-dm-sans',
+  display: 'swap',
+});
+
+const obitron = Orbitron({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-orbitron',
   display: 'swap',
 });
 
@@ -27,7 +34,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${dmSans.variable} ${outfit.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${outfit.variable} ${obitron.variable} font-sans antialiased`}>
       <AuthProvider>
         {children}
       </AuthProvider>
